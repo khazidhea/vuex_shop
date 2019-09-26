@@ -31,31 +31,21 @@
 </template>
 
 <script>
+import { mapState } from 'vuex'
+
 export default {
   name: 'CategoryList',
   data: function () {
-    return {
-      'category': null,
-      'categories': []
-    }
+    return {}
   },
+  computed: mapState(['categories']),
   methods: {
     categoryClick: function (category) {
-      this.category = category
-      this.axios
-        .get('http://127.0.0.1:8000/api/categories/' + category.id + '/')
-        .then(function (response) {
-          category.products = response.data.products
-        })
+
     }
   },
-  mounted: function () {
-    var self = this
-    this.axios
-      .get('http://127.0.0.1:8000/api/categories/')
-      .then(function (response) {
-        self.categories = response.data
-      })
+  created: function () {
+    this.$store.dispatch('getCategories')
   }
 }
 </script>
