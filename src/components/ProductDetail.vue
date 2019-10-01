@@ -29,7 +29,7 @@
             <p class="text-success">Free shipping</p>
             <br>
             <p>
-              <input class="btn btn-primary" type="submit" value="Buy now"/>
+              <button class="btn btn-primary" @click="buy">Buy now</button>
             </p>
           </div> <!-- action-wrap.// -->
         </aside> <!-- col.// -->
@@ -41,6 +41,20 @@
 <script>
 export default {
   name: 'ProductDetail',
-  props: ['product']
+  props: ['product'],
+  methods: {
+    buy: function () {
+      let order = {
+        items: [
+          {
+            product: this.product.id,
+            quantity: 1
+          }
+        ],
+        customer: 1
+      }
+      this.$store.dispatch('createOrder', order)
+    }
+  }
 }
 </script>
