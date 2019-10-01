@@ -41,7 +41,7 @@ export default {
   computed: mapState(['categories']),
   methods: {
     categoryClick: function (category) {
-
+      this.$store.dispatch('getCategory', category.id)
     }
   },
   created: function () {
