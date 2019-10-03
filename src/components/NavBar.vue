@@ -12,13 +12,35 @@
 
       <ul class="navbar-nav ml-auto">
       <li>
-        <form class="form-inline my-2 my-lg-0" method="POST" action="/login/">
-        <input class="form-control mr-sm-2" type="text" name="username" placeholder="Username">
-        <input class="form-control mr-sm-2" type="password" name="password" placeholder="Password">
-        <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Login</button>
-        </form>
+        <div class="form-inline my-2 my-lg-0" v-if="token">
+          <button class="btn btn-outline-success my-2 my-sm-0" @click="logout">Logout</button>
+        </div>
+        <div class="form-inline my-2 my-lg-0" v-else>
+          <input class="form-control mr-sm-2" type="text" v-model="username"/>
+          <input class="form-control mr-sm-2" type="password" v-model="password"/>
+          <button class="btn btn-outline-success my-2 my-sm-0" @click="login({username, password})">Login</button>
+        </div>
       </li>
       </ul>
     </div>
   </nav>
 </template>
+
+<script>
+import { mapActions, mapState } from 'vuex'
+
+export default {
+  data () {
+    return {
+      username: 'username',
+      password: 'password'
+    }
+  },
+  computed: {
+    ...mapState(['token'])
+  },
+  methods: {
+    ...mapActions(['login', 'logout'])
+  }
+}
+</script>
