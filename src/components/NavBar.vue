@@ -8,6 +8,9 @@
       <li class="nav-item">
          <router-link to="/about" class="nav-link">About</router-link>
       </li>
+      <li class="nav-item">
+         {{ error }}
+      </li>
       </ul>
 
       <ul class="navbar-nav ml-auto">
@@ -37,7 +40,7 @@ export default {
     }
   },
   computed: {
-    ...mapState(['token'])
+    ...mapState(['token', 'error'])
   },
   methods: {
     ...mapActions(['login', 'logout'])

@@ -10,9 +10,16 @@ export default new Vuex.Store({
   state: {
     categories: [],
     category: null,
-    token: localStorage.getItem('token') || ''
+    token: localStorage.getItem('token') || '',
+    error: ''
   },
   mutations: {
+    error (state, error) {
+      state.error = error
+    },
+    clean_error (state) {
+      state.error = ''
+    },
     login_success (state, token) {
       state.token = token
     },
@@ -31,11 +38,19 @@ export default new Vuex.Store({
   },
   actions: {
     async login (context, credentials) {
-      let response = await axios.post(`${API_URL}/auth/`, credentials)
-      let token = response.data.token
-      localStorage.setItem('token', token)
-      axios.defaults.headers.common['Authorization'] = 'Token ' + token
-      context.commit('login_success', token)
+      try {
+        let response = await axios.post(`${API_URL}/auth/`, credentials)
+        let token = response.data.token
+        localStorage.setItem('token', token)
+        axios.defaults.headers.common['Authorization'] = 'Token ' + token
+        context.commit('login_success', token)
+        context.commit('clean_error')
+      } catch (error) {
+        console.log(error.response.status)
+        if (error.response.status == 400) {
+          context.commit('error', 'bad credentials')
+        }
+      }
     },
     logout (context) {
       context.commit('logout')
